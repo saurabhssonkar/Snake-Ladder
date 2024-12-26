@@ -134,6 +134,7 @@ const SnakeAndLadder = () => {
 
 // only logic for dice draw for the number
   useEffect(() => {
+    console.log("saurabh render")
     const canvas1 = canvas1Ref.current;
     const context1 = canvas1.getContext("2d");
 
@@ -201,13 +202,17 @@ const SnakeAndLadder = () => {
   // this is the roll dice function to rool the dice with give value of this dice
 
   const rollDice = () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    // const canvas = canvasRef.current;
+    // const context = canvas.getContext("2d");
     const newDiceNumber = Math.floor(Math.random() * 6) + 1;
     setDiceNumber(newDiceNumber);
-    const current = currentPlayer === 1 ? player1 : player2;
-    current.roll();
-    current.show(context);
+    player1.show()
+    player2.show()
+    player1.roll()
+    player2.roll()
+    // const current = currentPlayer === 1 ? player1 : player2;
+    // current.roll();
+    // current.show(context);
 
    
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
@@ -215,6 +220,7 @@ const SnakeAndLadder = () => {
 
  // ------------ this code is allright ok tha is no problem with this code ---------
   useEffect(() => {
+    
     const context = canvasRef.current.getContext("2d");
     const diceContext = canvas1Ref.current.getContext("2d");
 
@@ -247,6 +253,8 @@ const SnakeAndLadder = () => {
       this.diceContext = diceContext;
       this.tiles = tiles;
       this.context = context
+      this.roll()
+      this.show()
     }
 
     roll() {
@@ -290,7 +298,8 @@ const SnakeAndLadder = () => {
     // }
 
     show() {
-      console.log("3",this.context)
+      
+      // console.log("3",this.context)
       let currentTile = tiles[this.spot];
       console.log("currenttitle",currentTile)
 
