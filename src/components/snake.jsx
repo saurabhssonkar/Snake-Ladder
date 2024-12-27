@@ -245,71 +245,68 @@ const SnakeAndLadder = () => {
 
 
   class Player {
-    constructor(color, playerNumber, diceContext,context, tiles) {
+    constructor(color, playerNumber, diceContext, context, tiles) {
       this.spot = 0;
+      this.previousSpot = 0;  // Track the previous spot to clear it later
       this.color = color;
       this.playerNumber = playerNumber;
       this.isActive = false;
       this.diceContext = diceContext;
       this.tiles = tiles;
-      this.context = context
-      this.roll()
-      this.show()
+      this.context = context;
+      this.roll();  // Executes the roll method to set initial position
+      this.show();  // Executes the show method to render the player position
     }
-
+  
     roll() {
-      console.log("1")
-      let r = Math.floor(Math.random() * 6) + 1;
+      console.log("Rolling dice...");
+      let r = Math.floor(Math.random() * 6) + 1;  // Generate a random dice roll between 1 and 6
+  
       if (r === 1) {
         this.isActive = true;
       }
+  
       if (this.isActive) {
-        this.spot += r;
-        this.spot = Math.min(this.spot, this.tiles.length - 1); // Prevent out of bounds
+        this.previousSpot = this.spot;  // Save the previous spot before updating
+        this.spot += r;  // Move player spot by the dice roll
+        this.spot = Math.min(this.spot, this.tiles.length - 1);  // Prevent out of bounds
       }
+  
+      // Optionally, you can call showDice here if you want to display the dice immediately
       // this.showDice(r);
     }
-
-    // showDice(num) {
-    //   console.log("2")
-    //   this.diceContext.clearRect(0, 0, 150, 150);
-    //   const x = 50;
-    //   const y = 50;
-
-    //   this.diceContext.strokeStyle = "#fff";
-    //   this.diceContext.lineWidth = 3;
-    //   this.diceContext.strokeRect(x, y, 100, 100);
-
-    //   this.diceContext.fillStyle = "#fff";
-    //   const positions = [
-    //     [[100, 100]], // For 1
-    //     [[80, 80], [120, 120]], // For 2
-    //     [[60, 60], [100, 100], [140, 140]], // For 3
-    //     [[60, 60], [140, 60], [60, 140], [140, 140]], // For 4
-    //     [[60, 60], [140, 60], [100, 100], [60, 140], [140, 140]], // For 5
-    //     [[60, 60], [100, 60], [140, 60], [60, 140], [100, 140], [140, 140]], // For 6
-    //   ];
-    //   positions[num - 1].forEach(([cx, cy]) => {
-    //     this.diceContext.beginPath();
-    //     this.diceContext.arc(x + cx, y + cy, 10, 0, Math.PI * 2);
-    //     this.diceContext.fill();
-    //     this.diceContext.closePath();
-    //   });
-    // }
-
-    show() {
+  
+    showDice(num) {
       
-      // console.log("3",this.context)
-      let currentTile = tiles[this.spot];
-      console.log("currenttitle",currentTile)
+    }
+  
+    show() {
 
-      let center = currentTile.getCenter();
-      console.log("center@@@123", center)
-      this.context.beginPath();
-      this.context.fillStyle = this.color;
-      this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-      this.context.fill();
-      this.context.closePath();
+        // console.log("3",this.context)
+        let currentTile = tiles[this.spot];
+        const previousTile = tiles[this.previousSpot]; 
+        console.log("currenttitle",currentTile)
+        console.log("previousTile",previousTile)
+
+  
+        let center = currentTile.getCenter();
+        console.log("center@@@123", center)
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
+        this.context.fill();
+        this.context.closePath();
+     
+      if (previousTile) {
+        let prevCenter = previousTile.getCenter();
+        
+        this.context.clearRect(prevCenter[0] - 15, prevCenter[1] - 15, 30, 30); // Clear previous position
+        this.context.fillStyle = 'red';
+        this.context.fillRect(prevCenter[0] - 15, prevCenter[1] - 15, 30, 30);
+      }
+  
+      
+  
       if (currentTile.x == 50 && currentTile.y == 400) {
         this.spot = 42;
         currentTile = tiles[this.spot];
@@ -383,6 +380,7 @@ const SnakeAndLadder = () => {
       }
     }
   }
+  
 
 
 
