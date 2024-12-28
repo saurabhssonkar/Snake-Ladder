@@ -1,413 +1,317 @@
-import React, { useEffect, useRef, useState } from "react";
-import snake4 from "../assest/snake1.png"
-import snake5 from "../assest/snake2.png"
-import snake6 from "../assest/snake3.png"
-import ladder1 from "../assest/ladder1.png"
-
-const SnakeAndLadder = () => {
-  const canvasRef = useRef(null);
-  const canvas1Ref = useRef(null);
-  const [diceNumber, setDiceNumber] = useState(1);
-  const resolution = 50;
-  const [tiles, setTiles] = useState([]);
-  const [player1, setPlayer1] = useState(null);
-  const [player2, setPlayer2] = useState(null);
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-
-  const cols = 500 / resolution;
-  const rows = 500 / resolution;
+import React from 'react'
+import { useEffect } from 'react'
+import { Canvas2dGraphics } from './canvas-module';
+import snake_4 from "../assest/snake1.png"
+import snake_5 from "../assest/snake2.png"
+import snake_6 from "../assest/snake3.png"
+import ladder_1 from "../assest/ladder1.png"
 
 
-  let x = 0;
-  let y = (rows - 1) * resolution;
-  let dir = 1;
+const Snake = () => {
 
-  // --------------------- this code i done that why no problem of this code  ---------
+  
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
 
-    const canvas1 = canvas1Ref.current;
-    const context1 = canvas1.getContext("2d");
-
-    // Initialize images
-    const snakeImage1 = new Image();
-    const snakeImage2 = new Image();
-    const snakeImage3 = new Image();
-    const ladderImage1 = new Image();
-    const ladderImage2 = new Image();
-    const ladderImage3 = new Image();
-    const ladderImage4 = new Image();
-
-    snakeImage1.src = snake6;
-    snakeImage2.src = snake5;
-    snakeImage3.src = snake4;
-    ladderImage1.src = ladder1;
-    ladderImage2.src = ladder1;
-    ladderImage3.src = ladder1;
-    ladderImage4.src = ladder1;
-
-    // Generate tiles
-    for (let i = 0; i < cols * rows; i++) {
-      const tile = {
-        x,
-        y,
-        resolution,
-        index: i,
-        next: i + 1,
-
-        color: i % 4 === 0 ? "#FF6666" : i % 4 === 1 ? "#003366" : i % 4 === 2 ? "#CCCC00" : "#006600",
-
-        show() {
-          // noting running this show function 
-          console.log("@@@@@##!#@#")
-          context.beginPath();
-          context.fillStyle = this.color;
-          context.fillRect(this.x, this.y, this.resolution, this.resolution);
-          context.closePath();
-        },
-
-        getCenter() {
-          let cx = this.x + this.resolution / 2;
-          let cy = this.y + this.resolution / 2;
-          return [cx, cy];
-        },
-        showNumbers() {
-          context.beginPath();
-          context.font = "13px Arial";
-          context.fillStyle = "#fff";
-          context.fillText(this.index + 1, this.x + resolution / 3 - 9, this.y + resolution / 3 - 5);
-          context.closePath();
-        },
-        showLocation() {
-          // console.log('Tile :'+(this.index+1)+'- X:'+this.x+', Y:'+this.y);
-        }
+    
+    console.log("canvas", Canvas2dGraphics)
 
 
-      };
+    const canvas = document.getElementById('canvas'),
+      _canvasObj = new Canvas2dGraphics(canvas),
+      WIDTH = 500,
+      HEIGHT = 500,
+      numCol = 10,
+      numRow = 10,
+      boxSize = WIDTH / numCol,
+      player1Color = "#cc3399",
+      player2Color = '#66ccff',
+      canvasPlayer = document.createElement('canvas'),
+      _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer);
 
-      tiles.push(tile);
-      console.log("title", tile);
-      x += resolution * dir;
-      if (x >= 500 || x <= -resolution) {
+    //Variables
+    var boxArr = [],
+      x = 0,
+      y = (numRow - 1) * boxSize,
+      dir = 1,
+      snake1 = new Image(),
+      snake2 = new Image(),
+      snake3 = new Image(),
+      snake4 = new Image(),
+      ladder1 = new Image(),
+      ladder2 = new Image(),
+      ladder3 = new Image(),
+      player1 = new Player(player1Color, 1),
+      player2 = new Player(player2Color, 2),
+      isPlayer1Turn = Math.random() < 0.5 ? false : true,
+      dice = new Dice(20, 180, 100, '#fff');
+
+    snake1.src = snake_4;
+    snake2.src = snake_6;
+    snake3.src = snake_5;
+    snake4.src = snake_4;
+    ladder1.src = ladder_1;
+    ladder2.src = ladder_1;
+    ladder3.src = ladder_1;
+
+
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    canvasPlayer.width = 300;
+    canvasPlayer.height = 300;
+    canvasPlayer.style.background = '#000';
+    canvasPlayer.style.float = 'left';
+    document.body.appendChild(canvasPlayer);
+
+    for (let i = 0; i < numCol * numRow; i++) {
+      boxArr.push(new Box(x, y, boxSize, i));
+      x = x + boxSize * dir;
+      if (x >= WIDTH || x <= -boxSize) {
         dir *= -1;
-        x += resolution * dir;
-        y -= resolution;
+        x += boxSize * dir;
+        y -= boxSize;
       }
     }
- 
 
-    // initail Draw game board
-    const drawGamePlot = () => {
-      tiles.forEach((tile) => {
-        context.fillStyle = tile.color;
-        context.fillRect(tile.x, tile.y, tile.resolution, tile.resolution);
-        context.font = "13px Arial";
-        context.fillStyle = "#fff";
-        context.fillText(tile.index + 1, tile.x + resolution / 3 - 9, tile.y + resolution / 3 - 5);
-      });
-
-      // Draw images
-      snakeImage1.onload = () => context.drawImage(snakeImage1, resolution, 250, 100, 300);
-      snakeImage2.onload = () => context.drawImage(snakeImage2, 2 * resolution, 10, 200, 300);
-      snakeImage3.onload = () => context.drawImage(snakeImage3, 6 * resolution, 150, 100, 300);
-      ladderImage1.onload = () => {
-        context.save();
-        context.rotate(Math.PI / 11);
-        context.drawImage(ladderImage1, 3 * resolution + 20, 4 * resolution + 10, 30, 200);
-        context.restore();
-      };
-      ladderImage2.onload = () => {
-        context.save();
-        context.rotate(-Math.PI / 11);
-        context.drawImage(ladderImage2, 3 * resolution - 10, 2 * resolution, 30, 200);
-        context.restore();
-      };
-      ladderImage3.onload = () => context.drawImage(ladderImage3, 7 * resolution + 10, resolution - 15, 30, 300);
-      ladderImage4.onload = () => context.drawImage(ladderImage4, 8 * resolution + 10, 7 * resolution - 20, 30, 100);
-    };
-
-    drawGamePlot();
-
-  }, [cols, rows, resolution]);
-
-// only logic for dice draw for the number
-  useEffect(() => {
-    console.log("saurabh render")
-    const canvas1 = canvas1Ref.current;
-    const context1 = canvas1.getContext("2d");
-
-    class DrawDice {
-      constructor() {
-        this.x = 50;
-        this.y = 180;
+    window.addEventListener('click', playGame);
+    window.addEventListener('keydown', (e) => {
+      if (e.keyCode == 13) {
+        window.location.reload();
       }
+    });
 
-      showDice(num) {
-        console.log("num", num)
-        context1.clearRect(0, 0, canvas1.width, canvas1.height); // Clear previous dice
-        context1.beginPath();
-        context1.strokeStyle = "#fff";
-        context1.lineWidth = 3;
-        context1.rect(this.x, this.y, 100, 100);
-        context1.stroke();
-        context1.closePath();
+    function drawPlayerDetails() {
+      _canvasPlayerObj.ClearCanvas(0, 0, canvasPlayer.width, canvasPlayer.height);
+      _canvasPlayerObj.FillText('Player 1', 20, 30, player1Color, '25px Arial');
+      _canvasPlayerObj.FillCircle(150, 20, boxSize / 3, 0, 2 * Math.PI, false, player1Color);
+      _canvasPlayerObj.FillText('Player 2', 20, 70, player2Color, '25px Arial');
+      _canvasPlayerObj.FillCircle(150, 60, boxSize / 3, 0, 2 * Math.PI, false, player2Color);
 
-        context1.beginPath();
-        context1.fillStyle = "#fff";
-        switch (num) {
+      if (isPlayer1Turn) {
+        _canvasPlayerObj.FillText('Player 2 turn', 20, 120, player2Color, '25px Arial');
+      } else {
+        _canvasPlayerObj.FillText('Player 1 turn', 20, 120, player1Color, '25px Arial');
+      }
+    }
+
+    //function Dice
+    function Dice(x, y, size, color) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.color = color;
+
+      this.drawDice = function (n) {
+        _canvasPlayerObj.StrokeRectangle(this.x, this.y, this.size, this.size, this.color);
+        switch (n) {
           case 1:
-            context1.arc(this.x + 50, this.y + 50, 10, 0, Math.PI * 2);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 2, this.y + this.size / 2, 10, 0, 2 * Math.PI, false, this.color);
             break;
           case 2:
-            context1.arc(this.x + 30, this.y + 50, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 70, this.y + 50, 10, 0, Math.PI * 2);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
             break;
           case 3:
-            context1.arc(this.x + 20, this.y + 20, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 50, this.y + 50, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 80, 10, 0, Math.PI * 2);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 2, this.y + this.size / 2, 10, 0, 2 * Math.PI, false, this.color);
             break;
           case 4:
-            context1.arc(this.x + 20, this.y + 20, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 20, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 20, this.y + 80, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 80, 10, 0, Math.PI * 2);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
             break;
           case 5:
-            context1.arc(this.x + 20, this.y + 20, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 20, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 20, this.y + 80, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 80, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 50, this.y + 50, 10, 0, Math.PI * 2);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 2, this.y + this.size / 2, 10, 0, 2 * Math.PI, false, this.color);
+
             break;
           default:
-            context1.arc(this.x + 20, this.y + 30, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 50, this.y + 30, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 30, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 20, this.y + 70, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 50, this.y + 70, 10, 0, Math.PI * 2);
-            context1.arc(this.x + 80, this.y + 70, 10, 0, Math.PI * 2);
+            _canvasPlayerObj.FillCircle(this.x + this.size / 8 + 10, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 8 + 10, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 5 * this.size / 8 + 10, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 1 * this.size / 8 + 10, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 8 + 10, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            _canvasPlayerObj.FillCircle(this.x + 5 * this.size / 8 + 10, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
+            break;
         }
-        context1.fill();
-        context1.closePath();
+      }
+
+    }
+
+    //function play game
+    function playGame() {
+      if (isPlayer1Turn) {
+        drawBoard();
+        loadSnakeAndLadder();
+        player1.rollDice();
+        player1.drawPlayer();
+        player2.drawPlayer();
+        isPlayer1Turn = false;
+      } else {
+        drawBoard();
+        loadSnakeAndLadder();
+        player2.rollDice();
+        player1.drawPlayer();
+        player2.drawPlayer();
+        isPlayer1Turn = true;
       }
     }
 
-    const dice = new DrawDice();
-    dice.showDice(diceNumber);
-  }, [diceNumber]);
-
-  // this is the roll dice function to rool the dice with give value of this dice
-
-  const rollDice = () => {
-    // const canvas = canvasRef.current;
-    // const context = canvas.getContext("2d");
-    const newDiceNumber = Math.floor(Math.random() * 6) + 1;
-    setDiceNumber(newDiceNumber);
-    player1.show()
-    player2.show()
-    player1.roll()
-    player2.roll()
-    // const current = currentPlayer === 1 ? player1 : player2;
-    // current.roll();
-    // current.show(context);
-
-   
-    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
-  }
-
- // ------------ this code is allright ok tha is no problem with this code ---------
-  useEffect(() => {
-    
-    const context = canvasRef.current.getContext("2d");
-    const diceContext = canvas1Ref.current.getContext("2d");
-
-    // Initialize the board tiles
-    const newTiles = [];
-    for (let y = 0; y < 500; y += resolution) {
-      for (let x = 0; x < 500; x += resolution) {
-        newTiles.push({
-          x,
-          y,
-          getCenter: () => [x + resolution / 2, y + resolution / 2],
-        });
-        context.strokeRect(x, y, resolution, resolution);
-      }
-    }
-    setTiles(newTiles);
-
-    // Initialize players
-    setPlayer1(new Player("#fff", 1, diceContext, context,newTiles));
-    setPlayer2(new Player("#0015ff", 2, diceContext,context, newTiles));
-  }, []);
-
-
-  class Player {
-    constructor(color, playerNumber, diceContext, context, tiles) {
-      this.spot = 0;
-      this.previousSpot = 0;  // Track the previous spot to clear it later
+    //Player function
+    function Player(color, playerNumber) {
+      this.position = 0;
       this.color = color;
       this.playerNumber = playerNumber;
       this.isActive = false;
-      this.diceContext = diceContext;
-      this.tiles = tiles;
-      this.context = context;
-      this.roll();  // Executes the roll method to set initial position
-      this.show();  // Executes the show method to render the player position
-    }
-  
-    roll() {
-      console.log("Rolling dice...");
-      let r = Math.floor(Math.random() * 6) + 1;  // Generate a random dice roll between 1 and 6
-  
-      if (r === 1) {
-        this.isActive = true;
-      }
-  
-      if (this.isActive) {
-        this.previousSpot = this.spot;  // Save the previous spot before updating
-        this.spot += r;  // Move player spot by the dice roll
-        this.spot = Math.min(this.spot, this.tiles.length - 1);  // Prevent out of bounds
-      }
-  
-      // Optionally, you can call showDice here if you want to display the dice immediately
-      // this.showDice(r);
-    }
-  
-    showDice(num) {
-      
-    }
-  
-    show() {
 
-        // console.log("3",this.context)
-        let currentTile = tiles[this.spot];
-        const previousTile = tiles[this.previousSpot]; 
-        console.log("currenttitle",currentTile)
-        console.log("previousTile",previousTile)
+      this.rollDice = function () {
+        drawPlayerDetails();
+        let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
+        dice.drawDice(r);
+        if (r == 1) {
+          this.isActive = true;
+        }
+        if (r <= (boxArr.length - 1) - this.position && this.isActive) {
+          this.position += r;
+        }
+        //Check if player wins
+        if (this.position == boxArr.length - 1) {
+          alert('Player ' + this.playerNumber + 'wins!!!\nPlease press enter to restart the game.');
+        }
+      };
 
-  
-        let center = currentTile.getCenter();
-        console.log("center@@@123", center)
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-     
-      if (previousTile) {
-        let prevCenter = previousTile.getCenter();
-        
-        this.context.clearRect(prevCenter[0] - 15, prevCenter[1] - 15, 30, 30); // Clear previous position
-        this.context.fillStyle = 'red';
-        this.context.fillRect(prevCenter[0] - 15, prevCenter[1] - 15, 30, 30);
-      }
-  
-      
-  
-      if (currentTile.x == 50 && currentTile.y == 400) {
-        this.spot = 42;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-      }
-      else if (currentTile.x == 400 && currentTile.y == 400) {
-        this.spot = 31;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-      }
-      else if (currentTile.x == 350 && currentTile.y == 300) {
-        this.spot = 92;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-      }
-      else if (currentTile.x == 200 && currentTile.y == 200) {
-        this.spot = 83;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-      }
-      //update player by snake
-      else if (currentTile.x == 50 && currentTile.y == 250) {
-        this.spot = 2;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-      }
-      else if (currentTile.x == 300 && currentTile.y == 150) {
-        this.spot = 13;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
-      }
-      else if (currentTile.x == 100 && currentTile.y == 0) {
-        this.spot = 45;
-        currentTile = tiles[this.spot];
-        center = currentTile.getCenter();
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(center[0], center[1], resolution / 2 - 10, 0, Math.PI * 2);
-        this.context.fill();
-        this.context.closePath();
+      this.drawPlayer = function () {
+        let currentPos = boxArr[this.position];
+        if (this.position == 58) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 18;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        }
+        else if (this.position == 98) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 27;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        }
+        else if (this.position == 74) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 33;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        }
+        else if (this.position == 93) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 66;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        }
+        else if (this.position == 16) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 75;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        }
+        else if (this.position == 6) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 34;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        }
+        else if (this.position == 30) {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          this.position = 87;
+          setTimeout(() => {
+            currentPos = boxArr[this.position];
+            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+          }, 2000);
+        } else {
+          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+        }
+      };
+    }
+
+    //function to draw image of snake and ladder
+    function loadSnakeAndLadder() {
+      _canvasObj.DrawImageWH(snake1, boxSize * 1, boxSize * 4, 100, 250);
+      _canvasObj.DrawImageWH(snake2, boxSize * 1, 0, 230, 400);
+      _canvasObj.DrawImageWH(snake3, boxSize * 5, boxSize * 2, 100, 250);
+      _canvasObj.DrawImageWH(snake4, boxSize * 6, 0, 100, 200);
+      _canvasObj.Save();
+      _canvasObj.Rotate(0.25);
+      _canvasObj.DrawImageWH(ladder1, boxSize * 5, boxSize * 3, 30, 220);
+      _canvasObj.Restore();
+      _canvasObj.Save();
+      _canvasObj.Rotate(-0.15);
+      _canvasObj.DrawImageWH(ladder2, boxSize * 7, boxSize * 2.5, 30, 320);
+      _canvasObj.Restore();
+      _canvasObj.Save();
+      _canvasObj.Rotate(-0.2);
+      _canvasObj.DrawImageWH(ladder3, boxSize * 4, boxSize * 7, 30, 170);
+      _canvasObj.Restore();
+    }
+
+
+    //function box
+    function Box(x, y, size, index) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.index = index;
+
+      if (this.index % 4 == 1) {
+        this.color = '#f00';
+      } else if (this.index % 4 == 2) {
+        this.color = '#0f0';
+      } else if (this.index % 4 == 3) {
+        this.color = '#00f';
+      } else {
+        this.color = '#ffd633';
       }
     }
-  }
-  
+
+    Box.prototype.drawBox = function () {
+      _canvasObj.FillRectangle(this.x, this.y, this.size, this.size, this.color);
+      _canvasObj.FillText(this.index + 1, this.x + this.size / 1.5, this.y + this.size / 4, '#fff', '10px Arial');
+    }
+
+    function drawBoard() {
+      boxArr.forEach((b) => {
+        b.drawBox();
+      });
+    }
+
+    window.onload = function () {
+      drawBoard();
+      loadSnakeAndLadder();
+      player1.drawPlayer();
+      player2.drawPlayer();
+      drawPlayerDetails();
+    }
 
 
 
-
-
+  }, [])
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <canvas
-        ref={canvasRef}
-        id="canvas"
-        width="500"
-        height="500"
-        style={{ background: "rgb(0,0,0)", float: "left" }}
-      ></canvas>
-      <canvas
-        ref={canvas1Ref}
-        id="canvas1"
-        width="200"
-        height="300"
-        style={{ background: "#000", float: "left" }}
-      ></canvas>
+    <canvas id="canvas"></canvas>
+  )
+}
 
-      <button onClick={rollDice} style={{ padding: "10px 20px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px" }}>
-        Roll Dice
-      </button>
-    </div>
-  );
-};
-
-export default SnakeAndLadder;
+export default Snake

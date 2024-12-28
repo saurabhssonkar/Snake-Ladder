@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GameBoard from "./components/GameBoard";
 import DiceRoll from "./components/DiceRoll";
 import Dice from "./Dice";
-import SnakeAndLadder from "./components/snake";
+import Snake from "./components/snake";
 
 const App = () => {
   const [players, setPlayers] = useState([
@@ -52,7 +52,7 @@ const App = () => {
       <h1 className="text-3xl font-bold mb-4">Snakes and Ladders</h1>
       <GameBoard players={players} snakes={snakes} ladders={ladders} />
       <DiceRoll onRoll={handleDiceRoll} />
-      <SnakeAndLadder/>
+      <Snake/>
     </div>
   );
 };
