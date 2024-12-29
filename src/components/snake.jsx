@@ -9,14 +9,9 @@ import ladder_1 from "../assest/ladder1.png"
 
 const Snake = () => {
 
-  
+
 
   useEffect(() => {
-
-    
-    console.log("canvas", Canvas2dGraphics)
-
-
     const canvas = document.getElementById('canvas'),
       _canvasObj = new Canvas2dGraphics(canvas),
       WIDTH = 500,
@@ -60,7 +55,7 @@ const Snake = () => {
     canvasPlayer.width = 300;
     canvasPlayer.height = 300;
     canvasPlayer.style.background = '#000';
-    canvasPlayer.style.float = 'left';
+    canvasPlayer.style.float = 'right';
     document.body.appendChild(canvasPlayer);
 
     for (let i = 0; i < numCol * numRow; i++) {
@@ -71,6 +66,7 @@ const Snake = () => {
         x += boxSize * dir;
         y -= boxSize;
       }
+      console.log("boxarray",boxArr)
     }
 
     window.addEventListener('click', playGame);
@@ -80,6 +76,8 @@ const Snake = () => {
       }
     });
 
+
+   // palyer draw for 1 and 2
     function drawPlayerDetails() {
       _canvasPlayerObj.ClearCanvas(0, 0, canvasPlayer.width, canvasPlayer.height);
       _canvasPlayerObj.FillText('Player 1', 20, 30, player1Color, '25px Arial');
@@ -161,7 +159,6 @@ const Snake = () => {
         isPlayer1Turn = true;
       }
     }
-
     //Player function
     function Player(color, playerNumber) {
       this.position = 0;
@@ -172,12 +169,30 @@ const Snake = () => {
       this.rollDice = function () {
         drawPlayerDetails();
         let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
+        console.log("r value",r)
         dice.drawDice(r);
         if (r == 1) {
           this.isActive = true;
         }
         if (r <= (boxArr.length - 1) - this.position && this.isActive) {
-          this.position += r;
+         
+          let targetPosition = this.position + r;
+          console.log("run",this.position , targetPosition)
+          // this.position += r;
+
+          let interval = setInterval(() => {
+            if (this.position < targetPosition) {
+              console.log(" simple postion",this.position)
+              this.position++;
+              drawBoard(); 
+              loadSnakeAndLadder(); 
+              player1.drawPlayer(); 
+              player2.drawPlayer(); 
+            } else {
+              clearInterval(interval); // Stop animation when target reached
+             this.checkSpecialConditions(); // Check for snakes or ladders
+            }
+          }, 300);
         }
         //Check if player wins
         if (this.position == boxArr.length - 1) {
@@ -185,69 +200,49 @@ const Snake = () => {
         }
       };
 
-      this.drawPlayer = function () {
-        let currentPos = boxArr[this.position];
-        if (this.position == 58) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 18;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
+       this.checkSpecialConditions =()=> {
+
+   
+    
+        let specialPositions = {
+            58: 18, // Example: Snake sends player back
+            98: 25,
+            74: 33, // Example: Ladder sends player forward
+            6:34,
+            93:66,
+            16:55,
+            28:87
+
+        };
+                   console.log(" specialPositions[this.position]",this.position,specialPositions[this.position])
+
+    
+        if (specialPositions[this.position] !== undefined) {
+                     console.log(" ladder and sanke1 postion",this.position)
+
+
+            setTimeout(() => {
+                this.position = specialPositions[this.position];
+                console.log(" ladder and sanke2 postion",this.position)
+
+                drawBoard(); // Redraw the board
+                loadSnakeAndLadder(); // Load snakes and ladders
+                player1.drawPlayer(); // Draw player 1
+                player2.drawPlayer(); // Draw player 2
+            }, 500); // Delay for effect
         }
-        else if (this.position == 98) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 27;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
-        }
-        else if (this.position == 74) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 33;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
-        }
-        else if (this.position == 93) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 66;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
-        }
-        else if (this.position == 16) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 75;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
-        }
-        else if (this.position == 6) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 34;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
-        }
-        else if (this.position == 30) {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          this.position = 87;
-          setTimeout(() => {
-            currentPos = boxArr[this.position];
-            _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-          }, 2000);
-        } else {
-          _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
-        }
-      };
     }
 
+      this.drawPlayer = function () {
+        let currentPos = boxArr[this.position];
+       
+        _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+
+
+      };
+
+
+    }
     //function to draw image of snake and ladder
     function loadSnakeAndLadder() {
       _canvasObj.DrawImageWH(snake1, boxSize * 1, boxSize * 4, 100, 250);
@@ -267,8 +262,6 @@ const Snake = () => {
       _canvasObj.DrawImageWH(ladder3, boxSize * 4, boxSize * 7, 30, 170);
       _canvasObj.Restore();
     }
-
-
     //function box
     function Box(x, y, size, index) {
       this.x = x;
@@ -305,6 +298,8 @@ const Snake = () => {
       player2.drawPlayer();
       drawPlayerDetails();
     }
+
+
 
 
 

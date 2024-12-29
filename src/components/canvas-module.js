@@ -438,6 +438,9 @@ class Canvas2dGraphics {
                 this.context.drawImage(Image, x, y);
                 this.context.closePath();
             }
+
+
+            
         }catch(err){
             console.error('Draw Image - '+new Error(err));
         }
