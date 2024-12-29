@@ -200,38 +200,43 @@ const Snake = () => {
         }
       };
 
-       this.checkSpecialConditions =()=> {
-
-   
-    
-        let specialPositions = {
-            58: 18, // Example: Snake sends player back
-            98: 25,
-            74: 33, // Example: Ladder sends player forward
-            6:34,
-            93:66,
-            16:55,
-            28:87
-
+      this.checkSpecialConditions = () => {
+        // Hardcoded paths for snakes and ladders
+        let specialPaths = {
+            58: [43, 38, 24, 17, 18],  // Snake: 58 -> 18
+            98: [83, 78, 64, 56, 46, 35, 25],  // Snake: 98 -> 25
+            74: [67, 54, 48, 33],  // Snake: 74 -> 33
+            6: [13, 26, 34],  // Ladder: 6 -> 34
+            93: [88, 72, 69, 67, 66],  // Snake: 93 -> 66
+            16: [25, 36, 46, 55],  // Ladder: 16 -> 55
+            28: [33, 38, 54, 67, 71, 87]  // Ladder: 28 -> 87
         };
-                   console.log(" specialPositions[this.position]",this.position,specialPositions[this.position])
-
     
-        if (specialPositions[this.position] !== undefined) {
-                     console.log(" ladder and sanke1 postion",this.position)
-
-
-            setTimeout(() => {
-                this.position = specialPositions[this.position];
-                console.log(" ladder and sanke2 postion",this.position)
-
-                drawBoard(); // Redraw the board
-                loadSnakeAndLadder(); // Load snakes and ladders
-                player1.drawPlayer(); // Draw player 1
-                player2.drawPlayer(); // Draw player 2
-            }, 500); // Delay for effect
+        // Check if the current position has a snake or ladder
+        if (specialPaths[this.position] !== undefined) {
+            let path = specialPaths[this.position]; // Retrieve the hardcoded path
+            console.log("Path to follow:", path);
+    
+            let index = 0; // Initialize path index
+    
+            let interval = setInterval(() => {
+                if (index < path.length) {
+                    this.position = path[index]; // Move to the next position in the path
+                    index++;
+    
+                    drawBoard(); // Redraw the board
+                    loadSnakeAndLadder(); // Reload snakes and ladders
+                    player1.drawPlayer(); // Update Player 1 position
+                    player2.drawPlayer(); // Update Player 2 position
+                } else {
+                    clearInterval(interval); // Stop animation when the path is complete
+                    console.log("Movement complete to:", this.position);
+                }
+            }, 300); // Adjust delay as needed for smooth animation
         }
-    }
+    };
+    
+    
 
       this.drawPlayer = function () {
         let currentPos = boxArr[this.position];
