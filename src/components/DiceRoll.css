@@ -24,37 +24,37 @@ body{
   height: 100%;
   width: 100%;
   border:2px solid #eee;
-  color: #fff;
+  color: black;
 }
 .container .cube div span{
   font-size: 32px;
   font-family: 'fontawesome';
 }
 .container .cube .front{
-  background: #ca0e0e;
+  background: white;
   transform: translateZ(100px);
 }
 .container .cube .back{
-  background: #f12a2a;
+  background:white;
   transform: translateZ(-100px) rotateY(180deg);
 }
 .container .cube .right{
-  background: #ed1111;
+  background: white;
   transform-origin: top right;
   transform: rotateY(-270deg) translateX(100px);
 }
 .container .cube .left{
-  background: #e81e1e;
+  background: white;
   transform-origin: center left;
   transform: rotateY(270deg) translateX(-100px);
 }
 .container .cube .top{
-  background: #ed1a1a;
+  background: white;
   transform-origin: top center;
   transform: rotateX(-270deg) translateY(-100px);
 }
 .container .cube .bottom{
-  background: #ef2020;
+  background: white;
   transform-origin: bottom center;
   transform: rotateX(270deg) translateY(100px);
 }

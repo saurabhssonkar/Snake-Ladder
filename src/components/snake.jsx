@@ -5,6 +5,7 @@ import snake_4 from "../assest/snake1.png"
 import snake_5 from "../assest/snake2.png"
 import snake_6 from "../assest/snake3.png"
 import ladder_1 from "../assest/ladder1.png"
+import LudoPawn from './LudoPawn';
 
 
 const Snake = () => {
@@ -12,8 +13,10 @@ const Snake = () => {
 
 
   useEffect(() => {
-    const canvas = document.getElementById('canvas'),
-      _canvasObj = new Canvas2dGraphics(canvas),
+    const canvas = document.getElementById('canvas')
+   const ctx = canvas.getContext('2d'),
+   _canvasObj = new Canvas2dGraphics(canvas),
+      
       WIDTH = 500,
       HEIGHT = 500,
       numCol = 10,
@@ -36,8 +39,8 @@ const Snake = () => {
       ladder1 = new Image(),
       ladder2 = new Image(),
       ladder3 = new Image(),
-      player1 = new Player(player1Color, 1),
-      player2 = new Player(player2Color, 2),
+      player1 = new Player(player1Color, 1,ctx),
+      player2 = new Player(player2Color, 2,ctx),
       isPlayer1Turn = Math.random() < 0.5 ? false : true,
       dice = new Dice(20, 180, 100, '#fff');
 
@@ -55,7 +58,7 @@ const Snake = () => {
     canvasPlayer.width = 300;
     canvasPlayer.height = 300;
     canvasPlayer.style.background = '#000';
-    canvasPlayer.style.float = 'right';
+    canvasPlayer.style.float = 'left';
     document.body.appendChild(canvasPlayer);
 
     for (let i = 0; i < numCol * numRow; i++) {
@@ -160,11 +163,14 @@ const Snake = () => {
       }
     }
     //Player function
-    function Player(color, playerNumber) {
+    function Player(color, playerNumber,ctx) {
+      console.log("ctx",ctx)
+
       this.position = 0;
       this.color = color;
       this.playerNumber = playerNumber;
       this.isActive = false;
+      this.pawn = new LudoPawn(ctx, 0, 0, color); // Create LudoPawn instance
 
       this.rollDice = function () {
         drawPlayerDetails();
@@ -232,7 +238,7 @@ const Snake = () => {
                     clearInterval(interval); // Stop animation when the path is complete
                     console.log("Movement complete to:", this.position);
                 }
-            }, 300); // Adjust delay as needed for smooth animation
+            }, 3000); // Adjust delay as needed for smooth animation
         }
     };
     
@@ -240,8 +246,14 @@ const Snake = () => {
 
       this.drawPlayer = function () {
         let currentPos = boxArr[this.position];
+
+        this.pawn.setPosition(
+          currentPos.x + currentPos.size / 2,
+          currentPos.y + currentPos.size / 2
+        );
+        this.pawn.draw();
        
-        _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+        // _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
 
 
       };
@@ -280,6 +292,8 @@ const Snake = () => {
         this.color = '#0f0';
       } else if (this.index % 4 == 3) {
         this.color = '#00f';
+      } else if (this.index % 4 == 0) {
+        this.color = '#fff';
       } else {
         this.color = '#ffd633';
       }
@@ -287,7 +301,7 @@ const Snake = () => {
 
     Box.prototype.drawBox = function () {
       _canvasObj.FillRectangle(this.x, this.y, this.size, this.size, this.color);
-      _canvasObj.FillText(this.index + 1, this.x + this.size / 1.5, this.y + this.size / 4, '#fff', '10px Arial');
+      _canvasObj.FillText(this.index + 1, this.x + this.size / 1.5, this.y + this.size / 4, '#0E0E0E', '12px Arial');
     }
 
     function drawBoard() {
@@ -310,7 +324,12 @@ const Snake = () => {
 
   }, [])
   return (
-    <canvas id="canvas"></canvas>
+    <div className='flex justify-center items-center'>
+    
+          <canvas id="canvas"></canvas>
+
+
+    </div>
   )
 }
 
