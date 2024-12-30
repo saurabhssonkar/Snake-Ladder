@@ -21,6 +21,7 @@ const DiceRoll = () => {
 
   const rollDice = () => {
     const randomAngle = Math.floor(Math.random() * 6) + 1;
+    console.log("randomNumber",randomAngle)
 
     setCubeStyle({
       transform: `rotateX(${angleArray[randomAngle][0]}deg) rotateY(${angleArray[randomAngle][1]}deg) rotateZ(${angleArray[randomAngle][2]}deg)`,

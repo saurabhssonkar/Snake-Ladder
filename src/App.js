@@ -48,10 +48,10 @@ const App = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen flex flex-col items-center">
+    <div className="p-6 bg-gray-400 min-h-screen flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Snakes and Ladders</h1>
-      <GameBoard players={players} snakes={snakes} ladders={ladders} />
-      <DiceRoll onRoll={handleDiceRoll} />
+      {/* <GameBoard players={players} snakes={snakes} ladders={ladders} /> */}
+      {/* <DiceRoll onRoll={handleDiceRoll} /> */}
       <Snake/>
     </div>
   );

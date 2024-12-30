@@ -5,7 +5,7 @@ body{
   perspective: 1000px;
   perspective-origin: 50% 50%;
   font-family: 'fontawesome';
-  height: 100vh;
+  /* height: 100vh; */
 }
 .container .cube{
   position: relative;
