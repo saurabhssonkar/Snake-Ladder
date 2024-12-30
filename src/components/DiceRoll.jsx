@@ -24,12 +24,12 @@ const DiceRoll = () => {
 
     setCubeStyle({
       transform: `rotateX(${angleArray[randomAngle][0]}deg) rotateY(${angleArray[randomAngle][1]}deg) rotateZ(${angleArray[randomAngle][2]}deg)`,
-      animation: 'animate 1.4s linear',
+      animation: 'animate 1s linear',
     });
 
     setTimeout(() => {
       setCubeStyle((prevStyle) => ({ ...prevStyle, animation: '' }));
-    }, 1400);
+    }, 500);
   };
 
   return (

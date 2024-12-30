@@ -80,7 +80,7 @@ const Snake = () => {
     });
 
 
-   // palyer draw for 1 and 2
+   // palyer draw for 1 and 2 dice detail
     function drawPlayerDetails() {
       _canvasPlayerObj.ClearCanvas(0, 0, canvasPlayer.width, canvasPlayer.height);
       _canvasPlayerObj.FillText('Player 1', 20, 30, player1Color, '25px Arial');
@@ -324,7 +324,7 @@ const Snake = () => {
 
   }, [])
   return (
-    <div className='flex justify-center items-center'>
+    <div className='canv'>
     
           <canvas id="canvas"></canvas>
 
