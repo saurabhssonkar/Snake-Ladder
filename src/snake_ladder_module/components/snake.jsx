@@ -1,10 +1,10 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { Canvas2dGraphics } from './canvas-module';
-import snake_4 from "../assest/snake1.png"
-import snake_5 from "../assest/snake2.png"
-import snake_6 from "../assest/snake3.png"
-import ladder_1 from "../assest/ladder1.png"
+import snake_4 from "../../assest/snake1.png"
+import snake_5 from "../../assest/snake2.png"
+import snake_6 from "../../assest/snake3.png"
+import ladder_1 from "../../assest/ladder1.png"
 import LudoPawn from './LudoPawn';
 import DiceRoll from './DiceRoll';
 
