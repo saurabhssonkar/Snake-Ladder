@@ -1,63 +1,48 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { Canvas2dGraphics } from './canvas-module';
-import snake_4 from "../../assest/snake1.png"
-import snake_5 from "../../assest/snake2.png"
-import snake_6 from "../../assest/snake3.png"
-import ladder_1 from "../../assest/ladder1.png"
 import LudoPawn from './LudoPawn';
 import DiceRoll from './DiceRoll';
 import useGameBoard from './useGameBoard';
 import useDice from './useDice';
+import useSnakeAndLadder from './useSnakeAndLadder';
 
 
 const Snake = () => {
-  const canvasPlayer = document.createElement('canvas');
-  const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer);
+  const WIDTH = 500;
+  const HEIGHT = 500;
+  const numCol = 10;
+  const numRow = 10;
+  const boxSize = WIDTH / numCol;
+ 
   const {drawBoard ,boxArr} = useGameBoard();
- const { drawDice } = useDice(20, 180, 100, '#fff', _canvasPlayerObj);
+ const { drawDice } = useDice(20, 180, 100, '#fff');
+ const {drawSnakesAndLadders} = useSnakeAndLadder(boxSize)
 
   // console.log("boxArr",boxArr())
 
 
   useEffect(() => {
     const canvas = document.getElementById('canvas')
-   const ctx = canvas.getContext('2d');
-  const _canvasObj = new Canvas2dGraphics(canvas);
-  
-      
-      const WIDTH = 500;
-      const HEIGHT = 500;
-      const numCol = 10;
-      const numRow = 10;
-      const boxSize = WIDTH / numCol;
+    const ctx = canvas.getContext('2d');
+   const _canvasObj = new Canvas2dGraphics(canvas);
+    const canvasPlayer = document.createElement('canvas');
+    const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer,boxSize)
+     
       const player1Color = "#cc3399";
-      const player2Color = '#66ccff',
+      const player2Color = '#66ccff';
      
 
-    //Variables
-    // var boxArr = [];
+    
      
-      snake1 = new Image(),
-       snake2 = new Image(),
-       snake3 = new Image(),
-       snake4 = new Image(),
-       ladder1 = new Image(),
-       ladder2 = new Image(),
-       ladder3 = new Image();
+    
       const player1 = new Player(player1Color, 1,ctx);
       const player2 = new Player(player2Color, 2,ctx);
       var  isPlayer1Turn = Math.random() < 0.5 ? false : true;
       
       
 
-     snake1.src = snake_4;
-     snake2.src = snake_6;
-     snake3.src = snake_5;
-     snake4.src = snake_4;
-     ladder1.src = ladder_1;
-     ladder2.src = ladder_1;
-     ladder3.src = ladder_1;
+    
 
 
      canvas.width = WIDTH;
@@ -67,17 +52,6 @@ const Snake = () => {
      canvasPlayer.style.background = '#000';
      canvasPlayer.style.float = 'left';
      document.body.appendChild(canvasPlayer);
-
-    // for (let i = 0; i < numCol * numRow; i++) {
-    //   boxArr.push(new Box(x, y, boxSize, i));
-    //   x = x + boxSize * dir;
-    //   if (x >= WIDTH || x <= -boxSize) {
-    //     dir *= -1;
-    //     x += boxSize * dir;
-    //     y -= boxSize;
-    //   }
-    //   // console.log("boxarray",boxArr)
-    // }
 
     window.addEventListener('click', playGame);
     window.addEventListener('keydown', (e) => {
@@ -108,14 +82,14 @@ const Snake = () => {
     function playGame() {
       if (isPlayer1Turn) {
         drawBoard(_canvasObj);
-        loadSnakeAndLadder();
+        drawSnakesAndLadders(_canvasObj);
         player1.rollDice();
         player1.drawPlayer();
         player2.drawPlayer();
         isPlayer1Turn = false;
       } else {
         drawBoard(_canvasObj);
-        loadSnakeAndLadder();
+        drawSnakesAndLadders(_canvasObj);
         player2.rollDice();
         player1.drawPlayer();
         player2.drawPlayer();
@@ -137,7 +111,7 @@ const Snake = () => {
         let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
         console.log(isPlayer1Turn)
         console.log("r value",r)
-        drawDice(r);
+        drawDice(r,_canvasPlayerObj);
         if (r == 1) {
           this.isActive = true;
           
@@ -153,7 +127,7 @@ const Snake = () => {
               console.log(" simple postion",this.position)
               this.position++;
               drawBoard(_canvasObj); 
-              loadSnakeAndLadder(); 
+              drawSnakesAndLadders(_canvasObj); 
               player1.drawPlayer(); 
               player2.drawPlayer(); 
             } else {
@@ -193,7 +167,7 @@ const Snake = () => {
                     index++;
     
                     drawBoard(_canvasObj); // Redraw the board
-                    loadSnakeAndLadder(); // Reload snakes and ladders
+                    drawSnakesAndLadders(_canvasObj); // Reload snakes and ladders
                     player1.drawPlayer(); // Update Player 1 position
                     player2.drawPlayer(); // Update Player 2 position
                 } else {
@@ -215,66 +189,19 @@ const Snake = () => {
         );
         this.pawn.draw();
        
-        // _canvasObj.FillCircle(currentPos.x + currentPos.size / 2, currentPos.y + currentPos.size / 2, boxSize / 3, 0, 2 * Math.PI, false, this.color);
+       
 
 
       };
 
 
     }
-    //function to draw image of snake and ladder
-    function loadSnakeAndLadder() {
-      _canvasObj.DrawImageWH(snake1, boxSize * 1, boxSize * 4, 100, 250);
-      _canvasObj.DrawImageWH(snake2, boxSize * 1, 0, 230, 400);
-      _canvasObj.DrawImageWH(snake3, boxSize * 5, boxSize * 2, 100, 250);
-      _canvasObj.DrawImageWH(snake4, boxSize * 6, 0, 100, 200);
-      _canvasObj.Save();
-      _canvasObj.Rotate(0.25);
-      _canvasObj.DrawImageWH(ladder1, boxSize * 5, boxSize * 3, 30, 220);
-      _canvasObj.Restore();
-      _canvasObj.Save();
-      _canvasObj.Rotate(-0.15);
-      _canvasObj.DrawImageWH(ladder2, boxSize * 7, boxSize * 2.5, 30, 320);
-      _canvasObj.Restore();
-      _canvasObj.Save();
-      _canvasObj.Rotate(-0.2);
-      _canvasObj.DrawImageWH(ladder3, boxSize * 4, boxSize * 7, 30, 170);
-      _canvasObj.Restore();
-    }
-    //function box
-    // function Box(x, y, size, index) {
-    //   this.x = x;
-    //   this.y = y;
-    //   this.size = size;
-    //   this.index = index;
+   
 
-    //   if (this.index % 4 == 1) {
-    //     this.color = '#f00';
-    //   } else if (this.index % 4 == 2) {
-    //     this.color = '#0f0';
-    //   } else if (this.index % 4 == 3) {
-    //     this.color = '#00f';
-    //   } else if (this.index % 4 == 0) {
-    //     this.color = '#fff';
-    //   } else {
-    //     this.color = '#ffd633';
-    //   }
-    // }
-
-    // Box.prototype.drawBox = function () {
-    //   _canvasObj.FillRectangle(this.x, this.y, this.size, this.size, this.color);
-    //   _canvasObj.FillText(this.index + 1, this.x + this.size / 1.5, this.y + this.size / 4, '#0E0E0E', '12px Arial');
-    // }
-
-    // function drawBoard() {
-    //   boxArr.forEach((b) => {
-    //     b.drawBox();
-    //   });
-    // }
 
     window.onload = function () {
       drawBoard(_canvasObj);
-      loadSnakeAndLadder();
+      drawSnakesAndLadders(_canvasObj);
       player1.drawPlayer();
       player2.drawPlayer();
       drawPlayerDetails();

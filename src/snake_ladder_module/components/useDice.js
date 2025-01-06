@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-const useDice = (x = 20, y = 180, size = 100, color = '#fff', _canvasPlayerObj) => {
+const useDice = (x = 20, y = 180, size = 100, color = '#fff') => {
   const diceRef = useRef(null);
 
   // Dice class definition
@@ -12,7 +12,7 @@ const useDice = (x = 20, y = 180, size = 100, color = '#fff', _canvasPlayerObj) 
       this.color = color;
     }
 
-    drawDice(n) {
+    drawDice(n,_canvasPlayerObj) {
       if (!_canvasPlayerObj) return;
 
       // Draw the outer rectangle for the dice
