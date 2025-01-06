@@ -95,15 +95,15 @@ const Snake = () => {
         drawBoard(_canvasObj);
         drawSnakesAndLadders(_canvasObj);
         player1.rollDice();
-        player1.drawPlayer();
-        player2.drawPlayer();
+        player1.PlayerDicePostion();
+        player2.PlayerDicePostion();
         isPlayer1Turn = false;
       } else {
         drawBoard(_canvasObj);
         drawSnakesAndLadders(_canvasObj);
         player2.rollDice();
-        player1.drawPlayer();
-        player2.drawPlayer();
+        player1.PlayerDicePostion();
+        player2.PlayerDicePostion();
         isPlayer1Turn = true;
       }
     }
@@ -140,8 +140,8 @@ const Snake = () => {
               this.position++;
               drawBoard(_canvasObj); 
               drawSnakesAndLadders(_canvasObj); 
-              player1.drawPlayer(); 
-              player2.drawPlayer(); 
+              player1.PlayerDicePostion(); 
+              player2.PlayerDicePostion(); 
             } else {
               clearInterval(interval); // Stop animation when target reached
              this.checkSpecialConditions(); // Check for snakes or ladders
@@ -180,8 +180,8 @@ const Snake = () => {
     
                     drawBoard(_canvasObj); // Redraw the board
                     drawSnakesAndLadders(_canvasObj); // Reload snakes and ladders
-                    player1.drawPlayer(); // Update Player 1 position
-                    player2.drawPlayer(); // Update Player 2 position
+                    player1.PlayerDicePostion(); // Update Player 1 position
+                    player2.PlayerDicePostion(); // Update Player 2 position
                 } else {
                     clearInterval(interval); // Stop animation when the path is complete
                     console.log("Movement complete to:", this.position);
@@ -192,7 +192,7 @@ const Snake = () => {
     
     
 
-      this.drawPlayer = function () {
+      this.PlayerDicePostion = function () {
         let currentPos = boxArr()[this.position];
 
         this.pawn.setPosition(
@@ -214,8 +214,8 @@ const Snake = () => {
     window.onload = function () {
       drawBoard(_canvasObj);
       drawSnakesAndLadders(_canvasObj);
-      player1.drawPlayer();
-      player2.drawPlayer();
+      player1.PlayerDicePostion();
+      player2.PlayerDicePostion();
       drawPlayerDetails();
     }
 
