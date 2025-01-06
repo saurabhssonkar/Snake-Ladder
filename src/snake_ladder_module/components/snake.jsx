@@ -11,56 +11,56 @@ import DiceRoll from './DiceRoll';
 
 const Snake = () => {
 
-
-
   useEffect(() => {
     const canvas = document.getElementById('canvas')
-   const ctx = canvas.getContext('2d'),
-   _canvasObj = new Canvas2dGraphics(canvas),
+   const ctx = canvas.getContext('2d');
+  const _canvasObj = new Canvas2dGraphics(canvas);
       
-      WIDTH = 500,
-      HEIGHT = 500,
-      numCol = 10,
-      numRow = 10,
-      boxSize = WIDTH / numCol,
-      player1Color = "#cc3399",
-      player2Color = '#66ccff',
-      canvasPlayer = document.createElement('canvas'),
-      _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer);
+      const WIDTH = 500;
+      const HEIGHT = 500;
+      const numCol = 10;
+      const numRow = 10;
+      const boxSize = WIDTH / numCol;
+      const player1Color = "#cc3399";
+      const player2Color = '#66ccff';
+      const canvasPlayer = document.createElement('canvas');
+      const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer);
 
     //Variables
-    var boxArr = [],
-      x = 0,
-      y = (numRow - 1) * boxSize,
-      dir = 1,
+    var boxArr = [];
+      var x = 0;
+      var y = (numRow - 1) * boxSize;
+      var dir = 1 ,
       snake1 = new Image(),
-      snake2 = new Image(),
-      snake3 = new Image(),
-      snake4 = new Image(),
-      ladder1 = new Image(),
-      ladder2 = new Image(),
-      ladder3 = new Image(),
-      player1 = new Player(player1Color, 1,ctx),
-      player2 = new Player(player2Color, 2,ctx),
-      isPlayer1Turn = Math.random() < 0.5 ? false : true,
-      dice = new Dice(20, 180, 100, '#fff');
+       snake2 = new Image(),
+       snake3 = new Image(),
+       snake4 = new Image(),
+       ladder1 = new Image(),
+       ladder2 = new Image(),
+       ladder3 = new Image();
+      const player1 = new Player(player1Color, 1,ctx);
+      const player2 = new Player(player2Color, 2,ctx);
+      var  isPlayer1Turn = Math.random() < 0.5 ? false : true;
+      
+      const dice = new Dice(20, 180, 100, '#fff');
+      
 
-    snake1.src = snake_4;
-    snake2.src = snake_6;
-    snake3.src = snake_5;
-    snake4.src = snake_4;
-    ladder1.src = ladder_1;
-    ladder2.src = ladder_1;
-    ladder3.src = ladder_1;
+     snake1.src = snake_4;
+     snake2.src = snake_6;
+     snake3.src = snake_5;
+     snake4.src = snake_4;
+     ladder1.src = ladder_1;
+     ladder2.src = ladder_1;
+     ladder3.src = ladder_1;
 
 
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-    canvasPlayer.width = 300;
-    canvasPlayer.height = 300;
-    canvasPlayer.style.background = '#000';
-    canvasPlayer.style.float = 'left';
-    document.body.appendChild(canvasPlayer);
+     canvas.width = WIDTH;
+     canvas.height = HEIGHT;
+     canvasPlayer.width = 300;
+     canvasPlayer.height = 300;
+     canvasPlayer.style.background = '#000';
+     canvasPlayer.style.float = 'left';
+     document.body.appendChild(canvasPlayer);
 
     for (let i = 0; i < numCol * numRow; i++) {
       boxArr.push(new Box(x, y, boxSize, i));
@@ -70,7 +70,7 @@ const Snake = () => {
         x += boxSize * dir;
         y -= boxSize;
       }
-      console.log("boxarray",boxArr)
+      // console.log("boxarray",boxArr)
     }
 
     window.addEventListener('click', playGame);
@@ -176,6 +176,7 @@ const Snake = () => {
       this.rollDice = function () {
         drawPlayerDetails();
         let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
+        console.log(isPlayer1Turn)
         console.log("r value",r)
         dice.drawDice(r);
         if (r == 1) {
