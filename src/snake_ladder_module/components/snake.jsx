@@ -8,10 +8,15 @@ import ladder_1 from "../../assest/ladder1.png"
 import LudoPawn from './LudoPawn';
 import DiceRoll from './DiceRoll';
 import useGameBoard from './useGameBoard';
+import useDice from './useDice';
 
 
 const Snake = () => {
+  const canvasPlayer = document.createElement('canvas');
+  const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer);
   const {drawBoard ,boxArr} = useGameBoard();
+ const { drawDice } = useDice(20, 180, 100, '#fff', _canvasPlayerObj);
+
   // console.log("boxArr",boxArr())
 
 
@@ -27,9 +32,8 @@ const Snake = () => {
       const numRow = 10;
       const boxSize = WIDTH / numCol;
       const player1Color = "#cc3399";
-      const player2Color = '#66ccff';
-      const canvasPlayer = document.createElement('canvas');
-      const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer),
+      const player2Color = '#66ccff',
+     
 
     //Variables
     // var boxArr = [];
@@ -45,7 +49,6 @@ const Snake = () => {
       const player2 = new Player(player2Color, 2,ctx);
       var  isPlayer1Turn = Math.random() < 0.5 ? false : true;
       
-      const dice = new Dice(20, 180, 100, '#fff');
       
 
      snake1.src = snake_4;
@@ -99,54 +102,7 @@ const Snake = () => {
       }
     }
 
-    //function Dice
-    function Dice(x, y, size, color) {
-      this.x = x;
-      this.y = y;
-      this.size = size;
-      this.color = color;
-
-      this.drawDice = function (n) {
-        _canvasPlayerObj.StrokeRectangle(this.x, this.y, this.size, this.size, this.color);
-        switch (n) {
-          case 1:
-            _canvasPlayerObj.FillCircle(this.x + this.size / 2, this.y + this.size / 2, 10, 0, 2 * Math.PI, false, this.color);
-            break;
-          case 2:
-            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            break;
-          case 3:
-            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + this.size / 2, this.y + this.size / 2, 10, 0, 2 * Math.PI, false, this.color);
-            break;
-          case 4:
-            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            break;
-          case 5:
-            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 4, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + this.size / 2, this.y + this.size / 2, 10, 0, 2 * Math.PI, false, this.color);
-
-            break;
-          default:
-            _canvasPlayerObj.FillCircle(this.x + this.size / 8 + 10, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 8 + 10, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 5 * this.size / 8 + 10, this.y + this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 1 * this.size / 8 + 10, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 3 * this.size / 8 + 10, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            _canvasPlayerObj.FillCircle(this.x + 5 * this.size / 8 + 10, this.y + 3 * this.size / 4, 10, 0, 2 * Math.PI, false, this.color);
-            break;
-        }
-      }
-
-    }
+    
 
     //function play game
     function playGame() {
@@ -181,7 +137,7 @@ const Snake = () => {
         let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
         console.log(isPlayer1Turn)
         console.log("r value",r)
-        dice.drawDice(r);
+        drawDice(r);
         if (r == 1) {
           this.isActive = true;
           
