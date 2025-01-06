@@ -16,14 +16,21 @@ const Snake = () => {
   const numRow = 10;
   const boxSize = WIDTH / numCol;
   var  isPlayer1Turn = Math.random() < 0.5 ? false : true;
+  let count = 0;
+  console.log("cout",count)
 
   const player1Color = "#cc3399";
   const player2Color = '#66ccff';
+  const canvasPlayer = document.createElement('canvas');
+  canvasPlayer.width = 300;
+  canvasPlayer.height = 300;
+  // console.log("!!!!!",canvasPlayer.width)
+
  
   const {drawBoard ,boxArr} = useGameBoard();
  const { drawDice } = useDice(20, 180, 100, '#fff');
  const {drawSnakesAndLadders} = useSnakeAndLadder(boxSize)
-   const{drawPlayerDetails} = usePlayerDetails(boxSize,player1Color,player2Color,isPlayer1Turn);
+  //  const{drawPlayerDetails} = usePlayerDetails(boxSize,player1Color,player2Color,isPlayer1Turn,canvasPlayer.width ,canvasPlayer.height);
 
   // console.log("boxArr",boxArr())
 
@@ -102,7 +109,7 @@ const Snake = () => {
     }
     //Player function
     function Player(color, playerNumber,ctx,_canvasPlayerObj) {
-      console.log("ctx",ctx)
+      // console.log("ctx",ctx)
 
       this.position = 0;
       this.color = color;
@@ -114,7 +121,7 @@ const Snake = () => {
       this.rollDice = function () {
         drawPlayerDetails();
         let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
-        console.log(isPlayer1Turn)
+        // console.log(isPlayer1Turn)
         console.log("r value",r)
         drawDice(r,this._canvasPlayerObj);
         if (r == 1) {
@@ -216,12 +223,18 @@ const Snake = () => {
 
 
 
-  }, [])
+  }, [count])
+
+  const handleCount=()=>{
+    count = count+1;
+  }
   return (
     <div className='canv'>
     
           <canvas id="canvas"></canvas>
           <DiceRoll/>
+
+          <button onClick={handleCount}></button>
 
 
     </div>
