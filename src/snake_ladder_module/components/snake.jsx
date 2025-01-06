@@ -7,14 +7,19 @@ import snake_6 from "../../assest/snake3.png"
 import ladder_1 from "../../assest/ladder1.png"
 import LudoPawn from './LudoPawn';
 import DiceRoll from './DiceRoll';
+import useGameBoard from './useGameBoard';
 
 
 const Snake = () => {
+  const {drawBoard ,boxArr} = useGameBoard();
+  // console.log("boxArr",boxArr())
+
 
   useEffect(() => {
     const canvas = document.getElementById('canvas')
    const ctx = canvas.getContext('2d');
   const _canvasObj = new Canvas2dGraphics(canvas);
+  
       
       const WIDTH = 500;
       const HEIGHT = 500;
@@ -24,13 +29,11 @@ const Snake = () => {
       const player1Color = "#cc3399";
       const player2Color = '#66ccff';
       const canvasPlayer = document.createElement('canvas');
-      const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer);
+      const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer),
 
     //Variables
-    var boxArr = [];
-      var x = 0;
-      var y = (numRow - 1) * boxSize;
-      var dir = 1 ,
+    // var boxArr = [];
+     
       snake1 = new Image(),
        snake2 = new Image(),
        snake3 = new Image(),
@@ -62,16 +65,16 @@ const Snake = () => {
      canvasPlayer.style.float = 'left';
      document.body.appendChild(canvasPlayer);
 
-    for (let i = 0; i < numCol * numRow; i++) {
-      boxArr.push(new Box(x, y, boxSize, i));
-      x = x + boxSize * dir;
-      if (x >= WIDTH || x <= -boxSize) {
-        dir *= -1;
-        x += boxSize * dir;
-        y -= boxSize;
-      }
-      // console.log("boxarray",boxArr)
-    }
+    // for (let i = 0; i < numCol * numRow; i++) {
+    //   boxArr.push(new Box(x, y, boxSize, i));
+    //   x = x + boxSize * dir;
+    //   if (x >= WIDTH || x <= -boxSize) {
+    //     dir *= -1;
+    //     x += boxSize * dir;
+    //     y -= boxSize;
+    //   }
+    //   // console.log("boxarray",boxArr)
+    // }
 
     window.addEventListener('click', playGame);
     window.addEventListener('keydown', (e) => {
@@ -148,14 +151,14 @@ const Snake = () => {
     //function play game
     function playGame() {
       if (isPlayer1Turn) {
-        drawBoard();
+        drawBoard(_canvasObj);
         loadSnakeAndLadder();
         player1.rollDice();
         player1.drawPlayer();
         player2.drawPlayer();
         isPlayer1Turn = false;
       } else {
-        drawBoard();
+        drawBoard(_canvasObj);
         loadSnakeAndLadder();
         player2.rollDice();
         player1.drawPlayer();
@@ -181,8 +184,9 @@ const Snake = () => {
         dice.drawDice(r);
         if (r == 1) {
           this.isActive = true;
+          
         }
-        if (r <= (boxArr.length - 1) - this.position && this.isActive) {
+        if (r <= (boxArr().length - 1) - this.position && this.isActive) {
          
           let targetPosition = this.position + r;
           console.log("run",this.position , targetPosition)
@@ -192,7 +196,7 @@ const Snake = () => {
             if (this.position < targetPosition) {
               console.log(" simple postion",this.position)
               this.position++;
-              drawBoard(); 
+              drawBoard(_canvasObj); 
               loadSnakeAndLadder(); 
               player1.drawPlayer(); 
               player2.drawPlayer(); 
@@ -203,7 +207,7 @@ const Snake = () => {
           }, 300);
         }
         //Check if player wins
-        if (this.position == boxArr.length - 1) {
+        if (this.position == boxArr().length - 1) {
           alert('Player ' + this.playerNumber + 'wins!!!\nPlease press enter to restart the game.');
         }
       };
@@ -232,7 +236,7 @@ const Snake = () => {
                     this.position = path[index]; // Move to the next position in the path
                     index++;
     
-                    drawBoard(); // Redraw the board
+                    drawBoard(_canvasObj); // Redraw the board
                     loadSnakeAndLadder(); // Reload snakes and ladders
                     player1.drawPlayer(); // Update Player 1 position
                     player2.drawPlayer(); // Update Player 2 position
@@ -247,7 +251,7 @@ const Snake = () => {
     
 
       this.drawPlayer = function () {
-        let currentPos = boxArr[this.position];
+        let currentPos = boxArr()[this.position];
 
         this.pawn.setPosition(
           currentPos.x + currentPos.size / 2,
@@ -282,38 +286,38 @@ const Snake = () => {
       _canvasObj.Restore();
     }
     //function box
-    function Box(x, y, size, index) {
-      this.x = x;
-      this.y = y;
-      this.size = size;
-      this.index = index;
+    // function Box(x, y, size, index) {
+    //   this.x = x;
+    //   this.y = y;
+    //   this.size = size;
+    //   this.index = index;
 
-      if (this.index % 4 == 1) {
-        this.color = '#f00';
-      } else if (this.index % 4 == 2) {
-        this.color = '#0f0';
-      } else if (this.index % 4 == 3) {
-        this.color = '#00f';
-      } else if (this.index % 4 == 0) {
-        this.color = '#fff';
-      } else {
-        this.color = '#ffd633';
-      }
-    }
+    //   if (this.index % 4 == 1) {
+    //     this.color = '#f00';
+    //   } else if (this.index % 4 == 2) {
+    //     this.color = '#0f0';
+    //   } else if (this.index % 4 == 3) {
+    //     this.color = '#00f';
+    //   } else if (this.index % 4 == 0) {
+    //     this.color = '#fff';
+    //   } else {
+    //     this.color = '#ffd633';
+    //   }
+    // }
 
-    Box.prototype.drawBox = function () {
-      _canvasObj.FillRectangle(this.x, this.y, this.size, this.size, this.color);
-      _canvasObj.FillText(this.index + 1, this.x + this.size / 1.5, this.y + this.size / 4, '#0E0E0E', '12px Arial');
-    }
+    // Box.prototype.drawBox = function () {
+    //   _canvasObj.FillRectangle(this.x, this.y, this.size, this.size, this.color);
+    //   _canvasObj.FillText(this.index + 1, this.x + this.size / 1.5, this.y + this.size / 4, '#0E0E0E', '12px Arial');
+    // }
 
-    function drawBoard() {
-      boxArr.forEach((b) => {
-        b.drawBox();
-      });
-    }
+    // function drawBoard() {
+    //   boxArr.forEach((b) => {
+    //     b.drawBox();
+    //   });
+    // }
 
     window.onload = function () {
-      drawBoard();
+      drawBoard(_canvasObj);
       loadSnakeAndLadder();
       player1.drawPlayer();
       player2.drawPlayer();
