@@ -176,6 +176,8 @@ const useDice = (x = 20, y = 180, size = 100, color = '#fff') => {
           break;
       }
     }
+
+     
   }
 
   // Initialize dice
@@ -184,7 +186,7 @@ const useDice = (x = 20, y = 180, size = 100, color = '#fff') => {
   }
 
   return {
-    drawDice: (n) => diceRef.current?.drawDice(n),
+    drawDice: (n,_canvasPlayerObj) => diceRef.current?.drawDice(n,_canvasPlayerObj),
   };
 };
 

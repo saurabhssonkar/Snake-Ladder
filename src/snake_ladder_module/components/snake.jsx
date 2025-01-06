@@ -6,6 +6,7 @@ import DiceRoll from './DiceRoll';
 import useGameBoard from './useGameBoard';
 import useDice from './useDice';
 import useSnakeAndLadder from './useSnakeAndLadder';
+import usePlayerDetails from './usePlayerDetails ';
 
 
 const Snake = () => {
@@ -14,10 +15,15 @@ const Snake = () => {
   const numCol = 10;
   const numRow = 10;
   const boxSize = WIDTH / numCol;
+  var  isPlayer1Turn = Math.random() < 0.5 ? false : true;
+
+  const player1Color = "#cc3399";
+  const player2Color = '#66ccff';
  
   const {drawBoard ,boxArr} = useGameBoard();
  const { drawDice } = useDice(20, 180, 100, '#fff');
  const {drawSnakesAndLadders} = useSnakeAndLadder(boxSize)
+   const{drawPlayerDetails} = usePlayerDetails(boxSize,player1Color,player2Color,isPlayer1Turn);
 
   // console.log("boxArr",boxArr())
 
@@ -29,16 +35,14 @@ const Snake = () => {
     const canvasPlayer = document.createElement('canvas');
     const _canvasPlayerObj = new Canvas2dGraphics(canvasPlayer,boxSize)
      
-      const player1Color = "#cc3399";
-      const player2Color = '#66ccff';
+    
      
 
     
      
     
-      const player1 = new Player(player1Color, 1,ctx);
-      const player2 = new Player(player2Color, 2,ctx);
-      var  isPlayer1Turn = Math.random() < 0.5 ? false : true;
+      const player1 = new Player(player1Color, 1,ctx,_canvasPlayerObj);
+      const player2 = new Player(player2Color, 2,ctx ,_canvasPlayerObj);
       
       
 
@@ -97,13 +101,14 @@ const Snake = () => {
       }
     }
     //Player function
-    function Player(color, playerNumber,ctx) {
+    function Player(color, playerNumber,ctx,_canvasPlayerObj) {
       console.log("ctx",ctx)
 
       this.position = 0;
       this.color = color;
       this.playerNumber = playerNumber;
       this.isActive = false;
+      this._canvasPlayerObj = _canvasPlayerObj
       this.pawn = new LudoPawn(ctx, 0, 0, color); // Create LudoPawn instance
 
       this.rollDice = function () {
@@ -111,7 +116,7 @@ const Snake = () => {
         let r = Math.floor(Math.random() * 6) + 1;//1 to 6;
         console.log(isPlayer1Turn)
         console.log("r value",r)
-        drawDice(r,_canvasPlayerObj);
+        drawDice(r,this._canvasPlayerObj);
         if (r == 1) {
           this.isActive = true;
           
