@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const userId = "some-user-id";
+const userId = localStorage.getItem('user')
+console.log("usrid",userId)
 const socket = io('http://localhost:4000', {
     query: { userId }
 });
@@ -25,25 +26,38 @@ function MatchPlayer() {
 
         const handlePlayerOffline = ( playerId) => {
             setMessage(`Player ${playerId} has disconnected.`);
+            navigate('/')
         };
 
         const handlePlayerQuit = (playerId ) => {
             setMessage(`Player ${playerId} has quit the game.`);
+            navigate('/')
+
         };
 
         const handleSessionClosed = ( reason ) => {
             setMessage(`Session closed: ${reason}`);
+            navigate('/')
+
         };
 
         const handleQuitDenied = ( reason ) => {
             setMessage(reason);
+            navigate('/')
+
         };
+        const handleStartGameEvent = ()=>{
+            setMessage('');
+            navigate('/snake-ladder');
+
+        }
 
         socket.on('match_found', handleMatchFound);
         socket.on('player_offline', handlePlayerOffline);
         socket.on('player_quit', handlePlayerQuit);
         socket.on('session_closed', handleSessionClosed);
         socket.on('quit_denied', handleQuitDenied);
+        socket.on("start_game", handleStartGameEvent)
 
         // return () => {
         //     socket.off('match_found', handleMatchFound);
