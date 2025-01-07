@@ -56,6 +56,7 @@ const useGameBoard = (numCol = 10, numRow = 10, boxSize = 50, canvasWidth = 500)
 
   // drawBoard function to render the boxes
   const drawBoard = (_canvasObj) => {
+    // alert(_canvasObj)
     if (boxArr.current.length === 0) {
       initializeBoard(); // Initialize the board only when needed
     }

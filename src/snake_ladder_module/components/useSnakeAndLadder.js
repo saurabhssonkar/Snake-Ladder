@@ -23,6 +23,7 @@ const useSnakeAndLadder = ( boxSize) => {
 
   // Function to draw snakes and ladders
   const drawSnakesAndLadders = useCallback((_canvasObj) => {
+    console.log("_canvasObj!!",_canvasObj)
     if (!_canvasObj) return;
 
     // Draw snakes

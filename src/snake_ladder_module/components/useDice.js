@@ -13,6 +13,7 @@ const useDice = (x = 20, y = 180, size = 100, color = '#fff') => {
     }
 
     drawDice(n,_canvasPlayerObj) {
+      // console.log("check dice object" ,_canvasPlayerObj,n)
       if (!_canvasPlayerObj) return;
 
       // Draw the outer rectangle for the dice
@@ -21,6 +22,7 @@ const useDice = (x = 20, y = 180, size = 100, color = '#fff') => {
       // Draw dots based on the number
       switch (n) {
         case 1:
+          // console.log("")
           _canvasPlayerObj.FillCircle(
             this.x + this.size / 2,
             this.y + this.size / 2,
