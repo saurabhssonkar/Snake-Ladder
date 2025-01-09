@@ -1,81 +1,71 @@
 import React, { useState } from "react";
 import "./DiceRoll.css";
-// import 'font-awesome/css/font-awesome.min.css';
-
 
 const DiceRoll = () => {
-  const [cubeStyle, setCubeStyle] = useState({
-    transform: '',
-    animation: '',
-  });
-
-  const angleArray = [
-    [0, 0, 0],
-    [-310, -362, -38],
-    [-400, -320, -2],
-    [135, -217, -88],
-    [-224, -317, 5],
-    [-47, -219, -81],
-    [-133, -360, -53],
-  ];
+  const [diceSide, setDiceSide] = useState(1);
+  const [diceResult, setDiceResult] = useState("Click to roll the dice!");
+  const [isRolling, setIsRolling] = useState(false);
 
   const rollDice = () => {
-    const randomAngle = Math.floor(Math.random() * 6) + 1;
-    console.log("randomNumber",randomAngle)
+    const result = Math.floor(Math.random() * 6) + 1;
+    setDiceSide(result);
+    setIsRolling(true);
 
-    setCubeStyle({
-      transform: `rotateX(${angleArray[randomAngle][0]}deg) rotateY(${angleArray[randomAngle][1]}deg) rotateZ(${angleArray[randomAngle][2]}deg)`,
-      animation: 'animate 1s linear',
-    });
-
+    // Simulate dice roll animation
     setTimeout(() => {
-      setCubeStyle((prevStyle) => ({ ...prevStyle, animation: '' }));
-    }, 500);
+      setDiceResult(`You've got ${result}`);
+      setIsRolling(false);
+    }, 800);
   };
 
   return (
-    <div className="container">
+    <div className="dice-roll-container">
       <div
-        className="cube"
-        id="cube"
-        style={cubeStyle}
+        id="dice"
+        className={`dice ${isRolling ? "reRoll" : ""}`}
+        data-side={diceSide}
         onClick={rollDice}
       >
-        <div className="front">
-          <span className="fa fa-circle"></span>
+        <div className={`sides side-1 ${diceSide === 1 ? "active" : ""}`}>
+          <span className="dot dot-1"></span>
         </div>
-        <div className="back">
-          <pre className="firstPre">
-            <span className="fa fa-circle"></span>    <span className="fa fa-circle"></span>    <span className="fa fa-circle"></span>
-          </pre>
-          <br />
-          <pre className="secondPre">
-            <span className="fa fa-circle"></span>    <span className="fa fa-circle"></span>    <span className="fa fa-circle"></span>
-          </pre>
+        <div className={`sides side-2 ${diceSide === 2 ? "active" : ""}`}>
+          <span className="dot dot-1"></span>
+          <span className="dot dot-2"></span>
         </div>
-        <div className="top">
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
+        <div className={`sides side-3 ${diceSide === 3 ? "active" : ""}`}>
+          <span className="dot dot-1"></span>
+          <span className="dot dot-2"></span>
+          <span className="dot dot-3"></span>
         </div>
-        <div className="left">
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
+        <div className={`sides side-4 ${diceSide === 4 ? "active" : ""}`}>
+          <span className="dot dot-1"></span>
+          <span className="dot dot-2"></span>
+          <span className="dot dot-3"></span>
+          <span className="dot dot-4"></span>
         </div>
-        <div className="right">
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
+        <div className={`sides side-5 ${diceSide === 5 ? "active" : ""}`}>
+          <span className="dot dot-1"></span>
+          <span className="dot dot-2"></span>
+          <span className="dot dot-3"></span>
+          <span className="dot dot-4"></span>
+          <span className="dot dot-5"></span>
         </div>
-        <div className="bottom">
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
-          <span className="fa fa-circle"></span>
+        <div className={`sides side-6 ${diceSide === 6 ? "active" : ""}`}>
+          <span className="dot dot-1"></span>
+          <span className="dot dot-2"></span>
+          <span className="dot dot-3"></span>
+          <span className="dot dot-4"></span>
+          <span className="dot dot-5"></span>
+          <span className="dot dot-6"></span>
         </div>
       </div>
+      {/* <div
+        id="diceResult"
+        className={`dice-result ${isRolling ? "hide" : "reveal"}`}
+      >
+        {diceResult}
+      </div> */}
     </div>
   );
 };

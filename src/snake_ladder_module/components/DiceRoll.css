@@ -1,128 +1,146 @@
-body{
-  background: #646262;
-}
-.container{
-  perspective: 1000px;
-  perspective-origin: 50% 50%;
-  font-family: 'fontawesome';
-  /* height: 100vh; */
-}
-.container .cube{
-  position: relative;
-  /* left: 45%;
-  top: 40%; */
-  height: 200px;
-  width: 200px;
+#dice {
+  width: 90px;
+  height: 90px;
   transform-style: preserve-3d;
-  cursor: pointer;
-  transform: rotateX(135deg) rotateY(-217deg) rotateZ(-88deg);
-}
-.container .cube div{
-  position: absolute;
-  box-sizing: border-box;
-  padding: 10px;
-  height: 100%;
-  width: 100%;
-  border:2px solid #eee;
-  color: black;
-}
-.container .cube div span{
-  font-size: 32px;
-  font-family: 'fontawesome';
-}
-.container .cube .front{
-  background: white;
-  transform: translateZ(100px);
-}
-.container .cube .back{
-  background:white;
-  transform: translateZ(-100px) rotateY(180deg);
-}
-.container .cube .right{
-  background: white;
-  transform-origin: top right;
-  transform: rotateY(-270deg) translateX(100px);
-}
-.container .cube .left{
-  background: white;
-  transform-origin: center left;
-  transform: rotateY(270deg) translateX(-100px);
-}
-.container .cube .top{
-  background: white;
-  transform-origin: top center;
-  transform: rotateX(-270deg) translateY(-100px);
-}
-.container .cube .bottom{
-  background: white;
-  transform-origin: bottom center;
-  transform: rotateX(270deg) translateY(100px);
+  transition: transform 1.5s ease-out;
 }
 
-/*DOT ALIGNMENT */
-.container .cube .front span,.container .cube .left span:nth-child(1),
-.container .cube .right span:nth-child(1){
+#dice:hover {
+cursor: pointer;
+}
+
+.sides{
+  background-color: #EFE5DC;
+  display: block;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.25);
 }
-.container .cube .top span:nth-child(1),.container .cube .left span:nth-child(2),
-.container .cube .right span:nth-child(2),
-.container .cube .bottom span:nth-child(1){
+
+.dot {
+  display: block;
   position: absolute;
-  top: 35px;
-  left: 35px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: black;
+  transform: translate(-50%, -50%);
 }
-.container .cube .top span:nth-child(2),.container .cube .left span:nth-child(3),
-.container .cube .right span:nth-child(3),
-.container .cube .bottom span:nth-child(2){
-  position: absolute;
-  bottom: 35px;
-  right: 35px;
+
+.side-1 .dot-1 { top: 50%; left: 50%; }
+
+.side-2 .dot-1 { top: 25%; left: 25%; }
+.side-2 .dot-2 { top: 75%; left: 75%; }
+
+.side-3 .dot-1 { top: 25%; left: 25%; }
+.side-3 .dot-2 { top: 75%; left: 75%; }
+.side-3 .dot-3 { top: 50%; left: 50%; }
+
+.side-4 .dot-1 { top: 25%; left: 25%; }
+.side-4 .dot-2 { top: 25%; left: 75%; }
+.side-4 .dot-3 { top: 75%; left: 25%; }
+.side-4 .dot-4 { top: 75%; left: 75%; }
+
+.side-5 .dot-1 { top: 25%; left: 25%; }
+.side-5 .dot-2 { top: 25%; left: 75%; }
+.side-5 .dot-3 { top: 75%; left: 25%; }
+.side-5 .dot-4 { top: 75%; left: 75%; }
+.side-5 .dot-5 { top: 50%; left: 50%; }
+
+.side-6 .dot-1 { top: 25%; left: 25%; }
+.side-6 .dot-2 { top: 25%; left: 75%; }
+.side-6 .dot-3 { top: 75%; left: 25%; }
+.side-6 .dot-4 { top: 75%; left: 75%; }
+.side-6 .dot-5 { top: 50%; left: 25%; }
+.side-6 .dot-6 { top: 50%; left: 75%; }
+
+#dice .side-1 {
+transform: translateZ(45px);
 }
-.container .cube .right span:nth-child(4),
-.container .cube .bottom span:nth-child(3){
-  position: absolute;
-  top: 35px;
-  right: 35px;
+#dice .side-2 {
+transform: rotateX(-180deg) translateZ(45px);
 }
-.container .cube .right span:nth-child(5),
-.container .cube .bottom span:nth-child(4){
-  position: absolute;
-  bottom: 35px;
-  left: 35px;
+#dice .side-3 {
+transform: rotateY(90deg) translateZ(45px);
 }
-.container .cube .back pre{
-  font-size: 32px;
-  font-family: 'fontawesome';
-  margin: 0;
+#dice .side-4 {
+transform: rotateY(-90deg) translateZ(45px);
 }
-.container .cube .back .firstPre{
-  position: absolute;
-  top: 45px;
-  left: 26px;
+#dice .side-5 {
+transform: rotateX(90deg) translateZ(45px);
 }
-.container .cube .back .secondPre{
-  position: absolute;
-  bottom: 45px;
-  right: 26px;
+#dice .side-6 {
+transform: rotateX(-90deg) translateZ(45px);
 }
-@keyframes animate {
-  25%{
-    transform: rotateX(45deg) rotateY(65deg) rotateZ(35deg);
-    top: 0%;
-  }
-  50%{
-    transform: rotateX(145deg) rotateY(165deg) rotateZ(135deg);
-    top: 30%;
-  }
-  75%{
-    transform: rotateX(276deg) rotateY(256deg) rotateZ(246deg);
-    top: 45%;
-  }
-  100%{
-    transform: rotateX(376deg) rotateY(356deg) rotateZ(346deg);
-    top: 60%;
-  }
+
+#dice[data-side="1"] {
+  transform: rotateX(360deg) rotateY(360deg) rotateZ(720deg);
+}
+#dice[data-side="2"] {
+  transform: rotateX(360deg) rotateY(540deg) rotateZ(720deg);
+}
+#dice[data-side="3"] {
+  transform: rotateX(360deg) rotateY(630deg) rotateZ(720deg);
+}
+#dice[data-side="4"] {
+  transform: rotateX(360deg) rotateY(450deg) rotateZ(720deg);
+}
+#dice[data-side="5"] {
+  transform: rotateX(630deg) rotateY(360deg) rotateZ(720deg);
+}
+#dice[data-side="6"] {
+  transform: rotateX(450deg) rotateY(360deg) rotateZ(720deg);
+}
+
+#dice[data-side="1"].reRoll {
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}
+#dice[data-side="2"].reRoll {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+}
+#dice[data-side="3"].reRoll {
+  transform: rotateX(0deg) rotateY(270deg) rotateZ(0deg);
+}
+#dice[data-side="4"].reRoll {
+  transform: rotateX(0deg) rotateY(90deg) rotateZ(0deg);
+}
+#dice[data-side="5"].reRoll {
+  transform: rotateX(270deg) rotateY(0deg) rotateZ(0deg);
+}
+#dice[data-side="6"].reRoll {
+  transform: rotateX(90deg) rotateY(0deg) rotateZ(0deg);
+}
+
+#diceResult{
+position: absolute;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+background-color: #EE4E34;
+color: white;
+font-weight: bold;
+padding: 0.5rem 1rem;
+border-radius: 0.25rem;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+#diceResult.hide{
+opacity: 0;
+}
+
+#diceResult.reveal{
+animation: fadeUp 0.3s forwards;
+}
+
+@keyframes fadeUp {
+0% {
+  opacity: 0;
+  bottom: 0;
+}
+
+100% {
+  opacity: 1;
+  bottom: 20px;
+}
 }
