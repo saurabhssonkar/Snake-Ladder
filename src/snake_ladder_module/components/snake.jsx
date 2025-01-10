@@ -6,6 +6,7 @@ import DiceRoll from './DiceRoll';
 import useGameBoard from './useGameBoard';
 import useDice from './useDice';
 import useSnakeAndLadder from './useSnakeAndLadder';
+import SnakeFooter from './SnakeFooter';
 
 const Snake = () => {
   const username = "saurabhssonkar";
@@ -203,12 +204,19 @@ const Snake = () => {
 
  
   return (
-    <div className="canv">
+    <div className=' bg-yellow-400'>
+        <div className="flex flex-row gap-5 items-center justify-center " >
       <canvas ref={canvasRef} />
-      <canvas ref={canvasPlayerRef} style={{ background: '#000', float: 'left' }} />
-      <DiceRoll onRoll={handleDiceRoll} />
+      <canvas ref={canvasPlayerRef}  />
+
+
+
+    </div><SnakeFooter onRoll={handleDiceRoll} />
 
     </div>
+
+  
+
   );
 };
 
