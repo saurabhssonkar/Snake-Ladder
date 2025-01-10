@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./DiceRoll.css";
 
-const DiceRoll = () => {
-  const [diceSide, setDiceSide] = useState(1);
+const DiceRoll = ({onRoll}) => {
+  const [diceSide, setDiceSide] = useState(3);
   const [diceResult, setDiceResult] = useState("Click to roll the dice!");
   const [isRolling, setIsRolling] = useState(false);
 
@@ -15,6 +15,9 @@ const DiceRoll = () => {
     setTimeout(() => {
       setDiceResult(`You've got ${result}`);
       setIsRolling(false);
+      if (onRoll) {
+        onRoll(result); // Send the dice result to the parent
+      }
     }, 800);
   };
 
@@ -60,12 +63,7 @@ const DiceRoll = () => {
           <span className="dot dot-6"></span>
         </div>
       </div>
-      {/* <div
-        id="diceResult"
-        className={`dice-result ${isRolling ? "hide" : "reveal"}`}
-      >
-        {diceResult}
-      </div> */}
+    
     </div>
   );
 };
