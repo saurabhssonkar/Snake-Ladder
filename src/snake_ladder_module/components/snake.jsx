@@ -7,6 +7,7 @@ import useGameBoard from './useGameBoard';
 import useDice from './useDice';
 import useSnakeAndLadder from './useSnakeAndLadder';
 import SnakeFooter from './SnakeFooter';
+import Chat from '../../online-chat/chat';
 
 const Snake = () => {
   const username = "saurabhssonkar";
@@ -126,8 +127,8 @@ const Snake = () => {
 
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
-    canvasPlayer.width = 300;
-    canvasPlayer.height = 300;
+    canvasPlayer.width = 200;
+    canvasPlayer.height = 200;
 
     const _player1 = new Player(player1Color, 1, ctx, _canvasPlayerObj, _canvasObj);
     const _player2 = new Player(player2Color, 2, ctx, _canvasPlayerObj, _canvasObj);
@@ -208,10 +209,12 @@ const Snake = () => {
         <div className="flex flex-row gap-5 items-center justify-center " >
       <canvas ref={canvasRef} />
       <canvas ref={canvasPlayerRef}  />
+      <Chat/>
 
 
 
-    </div><SnakeFooter onRoll={handleDiceRoll} />
+    </div>
+    <SnakeFooter onRoll={handleDiceRoll} />
 
     </div>
 
