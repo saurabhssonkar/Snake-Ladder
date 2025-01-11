@@ -1,8 +1,5 @@
 import { useEffect, useCallback } from "react";
-import snake_4 from "../../assest/snake1.png"
-import snake_5 from "../../assest/snake2.png"
-import snake_6 from "../../assest/snake3.png"
-import ladder_1 from "../../assest/ladder1.png"
+
 
 const useSnakeAndLadder = ( boxSize) => {
   // Snake and Ladder images
@@ -11,14 +8,14 @@ const useSnakeAndLadder = ( boxSize) => {
 
   // Load image sources
   useEffect(() => {
-    snakeImages[0].src = snake_4;// Replace with actual paths
-    snakeImages[1].src = snake_5;
-    snakeImages[2].src = snake_6;
-    snakeImages[3].src = snake_4;
+    snakeImages[0].src = "/assest/snake1.png";// Replace with actual paths
+    snakeImages[1].src = "/assest/snake2.png";
+    snakeImages[2].src = "assest/snake3.png";
+    snakeImages[3].src = "assest/snake1.png";
 
-    ladderImages[0].src = ladder_1;
-    ladderImages[1].src = ladder_1;
-    ladderImages[2].src = ladder_1;
+    ladderImages[0].src = "assest/ladder1.png";
+    ladderImages[1].src = "assest/ladder1.png";
+    ladderImages[2].src = "assest/ladder1.png";
   }, []);
 
   // Function to draw snakes and ladders
