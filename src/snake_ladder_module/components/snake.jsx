@@ -135,10 +135,17 @@ const Snake = () => {
     player1.current = _player1;
     player2.current = _player2;
 
-    drawBoard(_canvasObj);
-    _player1.updatePosition();
-    _player2.updatePosition();
-    drawPlayerDetails(_canvasPlayerObj, isPlayer1Turn);
+    // drawBoard(_canvasObj);
+   
+      setTimeout(()=>{
+        drawBoard(_canvasObj);
+        drawSnakesAndLadders(_canvasObj); 
+        _player1.updatePosition();
+        _player2.updatePosition();
+        drawPlayerDetails(_canvasPlayerObj, isPlayer1Turn);
+
+      },500)
+  
 
  
 
