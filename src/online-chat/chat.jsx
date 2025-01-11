@@ -85,7 +85,7 @@ const Chat = () => {
       <div className="mt-6">
         <button
           onClick={addFriendHandler}
-          className="w-full flex items-center justify-center gap-2 py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full flex items-center justify-center gap-2 py-3 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <UserPlus size={18} /> Add Friend
         </button>
