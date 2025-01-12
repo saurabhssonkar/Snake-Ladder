@@ -1,8 +1,14 @@
 
 import React from 'react';
 import { Gamepad2, Users, Trophy, Dice5, Rocket, Globe2 } from 'lucide-react';
+import {  useNavigate } from 'react-router-dom';
 
 function Landing() {
+  const navigation = useNavigate()
+  const handleButton =()=>{
+    navigation("/ludo-match")
+
+  }
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 via-purple-800 to-indigo-900 text-white">
       {/* Hero Section */}
@@ -32,7 +38,7 @@ function Landing() {
               unique multiplayer experience. Play with friends or challenge players worldwide!
             </p>
             <div className="flex gap-4">
-              <button className="bg-yellow-400 text-purple-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-300 transition-colors flex items-center gap-2">
+              <button onClick={handleButton}  className="bg-yellow-400 text-purple-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-300 transition-colors flex items-center gap-2">
                 <Gamepad2 size={24} />
                 Play Online
               </button>
