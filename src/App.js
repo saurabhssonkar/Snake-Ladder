@@ -86,16 +86,7 @@ function App() {
                             </Suspense>
                         }
                     />
-
-                    {/* Route for Match Player (Lazy Loaded) */}
-                    {/* <Route
-                        path="match/:mode"
-                        element={
-                            <Suspense fallback={<div>Loading Match Player...</div>}>
-                                <MatchPlayer key="match" />
-                            </Suspense>
-                        }
-                    /> */}
+                        
                       <Route
                         path="match"
                         element={
