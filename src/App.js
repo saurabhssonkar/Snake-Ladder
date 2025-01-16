@@ -63,18 +63,19 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PlayerMatch from './matchmaking/PlayerMatch'
+import Landing from "./pages/Landing"
 
 // Lazy load components
 const Snake = lazy(() => import('./snake_ladder_module/components/snake'));
 const MatchPlayer = lazy(() => import('./module/match/MatchPlayer'));
-const Landing = lazy(() => import('./pages/Landing')); // Lazily loaded Landing if needed
+// const Landing = lazy(() => import('./pages/Landing')); // Lazily loaded Landing if needed
 function App() {
     return (
         <BrowserRouter>
-            <Suspense fallback={<div>Loading...</div>}>
+          
                 <Routes>
                     {/* Route for Landing */}
-                    <Route path="/" element={<Landing />} />
+                    <Route path="/" element={<Landing/>} />
                     <Route path='ludo-match'  element = {<PlayerMatch/>} />
 
                     {/* Route for Snake-Ladder (Lazy Loaded) */}
@@ -97,7 +98,6 @@ function App() {
                     />
                     
                 </Routes>
-            </Suspense>
         </BrowserRouter>
     );
 }
